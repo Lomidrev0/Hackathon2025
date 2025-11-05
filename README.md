@@ -4,6 +4,10 @@
 
 ## Backend
 
+```bash
+cd backend
+```
+
 ### command pre vytvorenie venv (staci spustit len raz na zaciatku projektu aby sa inicializovalo virtualne prostredie):
 
 ```bash
@@ -24,6 +28,10 @@ uvicorn main:app --reload
 ```
 
 ## Frontend
+
+```bash
+cd frontend
+```
 
 ```bash
 npm install
