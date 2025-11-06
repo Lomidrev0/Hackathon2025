@@ -4,6 +4,8 @@
 
 ## Backend
 
+nede version: v20.17.0
+
 ```bash
 cd backend
 ```
@@ -11,7 +13,7 @@ cd backend
 ### command pre vytvorenie venv (staci spustit len raz na zaciatku projektu aby sa inicializovalo virtualne prostredie):
 
 ```bash
-python -m venv .venv.
+python -m venv .venv
 ```
 
 ### command pre spustenie venv (IDE pycharm by to malo spustiot automaticky ak nie tak command):
