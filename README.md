@@ -2,9 +2,11 @@
 
 [Figma debriefing](https://www.figma.com/files/team/1552201024805450837/project/491667744?fuid=1552203777580941580)
 
-## Backend
+nede version: 20.17.0
 
-nede version: v20.17.0
+npm version: 10.8.33
+
+## Backend
 
 ```bash
 cd backend
