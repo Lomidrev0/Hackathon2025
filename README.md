@@ -21,7 +21,7 @@ python -m venv .venv
 ### command pre spustenie venv (IDE pycharm by to malo spustiot automaticky ak nie tak command):
 
 ```bash
-\.venv\Scripts\activate
+.\.venv\Scripts\Activate.ps1
 ```
 
 ### commandy pre spustenie backendu:
