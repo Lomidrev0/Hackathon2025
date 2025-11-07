@@ -1,4 +1,5 @@
 fastapi
 uvicorn
 pydantic
-psygorpg2-binary
+psycopg2-binary
+langchain-ollama
