@@ -1,3 +1,4 @@
 /backend/.venv
 /.idea
 /frontend/node_modules
+backend/__pycache__/main.cpython-313.pyc

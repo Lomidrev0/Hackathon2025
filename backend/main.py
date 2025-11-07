@@ -4,11 +4,9 @@ app = FastAPI()
 
 DB_SERVER = "localhost"
 DB_USER = "receipts_user"
-DB_PASSWORD = "my_password"
+DB_PASSWORD = "mypassword"
 DB_NAME = "receipts_db"
 PORT = 5432
-
-
 
 @app.get("/")
 async def root():
