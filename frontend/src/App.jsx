@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
-import Profile from "./pages/Profile"
+import Chat from "./pages/Chat"
 import MainLayout from "./layouts/MainLayout"
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>
