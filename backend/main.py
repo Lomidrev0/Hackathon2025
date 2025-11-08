@@ -9,6 +9,7 @@ import re
 import os
 import pickle
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Body
 
 DB_SERVER = "localhost"
 DB_USER = "receipts_user"
@@ -236,3 +237,64 @@ async def ask_ai(prompt: str = Query(..., description="Otázka pre AI")):
 @app.get("/")
 async def root():
     return {"message": "Vector AI backend (LLaMA3 + SQL fallback + tréning) beží"}
+
+
+
+def get_db_connection():
+    return psycopg2.connect(
+        host=DB_SERVER,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        port=PORT
+    )
+
+def fetch_all_goals(conn):
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("SELECT * FROM saving_goals ORDER BY end_date;")
+    records = cursor.fetchall()
+    cursor.close()
+    return records
+
+@app.post("/goals")
+async def add_goal(
+        name: str = Body(...),
+        category: str = Body(...),
+        description: str = Body(None),
+        target_amount: float = Body(...),
+        start_date: str = Body(...),
+        end_date: str = Body(...),
+        user_id: int = Body(1),
+        motivation: str = Body(None)
+):
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO saving_goals
+            (user_id, name, category, description, target_amount, start_date, end_date, motivation)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+        """, (user_id, name, category, description, target_amount, start_date, end_date, motivation))
+        conn.commit()
+        cursor.close()
+        records = fetch_all_goals(conn)
+        return {"message": f"Goal '{name}' bol úspešne pridaný.", "goals": records}
+    except Exception as e:
+        return {"error": str(e), "goals": []}
+    finally:
+        if conn:
+            conn.close()
+
+@app.get("/goals")
+async def get_all_goals():
+    conn = None
+    try:
+        conn = get_db_connection()
+        records = fetch_all_goals(conn)
+        return {"goals": records if records is not None else []}
+    except Exception as e:
+        return {"error": str(e), "goals": []}
+    finally:
+        if conn:
+            conn.close()
