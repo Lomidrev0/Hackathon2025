@@ -25,20 +25,34 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
         isCollapsed ? "w-20" : "w-64"
       } bg-white dark:bg-dark-secondary text-gray-900 dark:text-gray-100 shadow-lg`}
     >
-        <div>
-            <div
-            className={`flex items-center ${
-              isCollapsed ? "justify-center" : "justify-between"
-            } p-4 border-b border-gray-200 dark:border-neutral-700 bg-blue-50 dark:bg-blue-60 text-white`}
+      <div>
+        <div
+          className={`flex flex-col border-b border-gray-200 dark:border-neutral-700 bg-blue-50 dark:bg-blue-60 text-white p-4 transition-all duration-300 ${
+          isCollapsed ? "items-center" : ""
+          }`}
+        >
+        {/* Top Row — Title + Toggle */}
+        <div className="w-full flex items-center justify-between">
+          {!isCollapsed && <h1 className="text-xl font-bold">Saivings</h1>}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-2 rounded"
           >
-            {!isCollapsed && <h1 className="text-xl font-bold">Saivings</h1>}
-            <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-2 rounded "
-            >
-              <FiMenu size={20} />
-            </button>
-          </div>
+            <FiMenu size={20} />
+          </button>
+        </div>
+
+        {/* Subtitle (hidden when collapsed) */}
+        <div
+          className={`text-[11px] tracking-wide text-gray-700 dark:text-gray-300 mt-0 transition-all duration-300 ${
+            isCollapsed
+              ? "opacity-0 translate-y-[-5px] h-0 overflow-hidden"
+              : "opacity-100 translate-y-0 h-auto"
+          }`}
+        >
+          Made by MLR x ERSTE
+        </div>
+      </div>
 
           {/* Navigation */}
           <nav className="flex flex-col mt-4 space-y-1 mx-1">
