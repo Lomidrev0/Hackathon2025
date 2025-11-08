@@ -74,49 +74,6 @@ export default function Dashboard() {
     ],
   };
 
-const merchantData = {
-  labels: ["Lidl", "Shell", "Netflix", "IKEA", "Uber Eats"],
-  datasets: [
-    {
-      label: "Spending (€)",
-      data: [230, 120, 75, 180, 95],
-      backgroundColor: "rgba(59, 131, 246, 0.24)",
-      borderColor: "#3B82F6",
-      fill: true,
-      pointBackgroundColor: "#3B82F6",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "#3B82F6",
-    },
-  ],
-};
-
-const radarOptions = {
-  responsive: true,
-  scales: {
-    r: {
-      beginAtZero: true,
-      ticks: {
-        backdropColor: "transparent",
-        color: "#6B7280",
-      },
-      grid: {
-        color: "rgba(156,163,175,0.2)",
-      },
-      angleLines: {
-        color: "rgba(156,163,175,0.2)",
-      },
-      pointLabels: {
-        color: "#374151",
-        font: { size: 12 },
-      },
-    },
-  },
-  plugins: {
-    legend: { display: false },
-    title: { display: true, text: "Top Vendors Spending Profile" },
-  },
-};
 
   const stackedData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May"],
@@ -143,44 +100,42 @@ const radarOptions = {
     responsive: true,
     plugins: {
       legend: { position: "top" },
-      title: { display: true, text: "Dlhodobé rozdelenie výdavkov" },
+      title: { display: false},
     },
     scales: { x: { stacked: true }, y: { stacked: true } },
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
-        {/* Spending by Category */}
-        <div className="bg-white rounded-xl shadow p-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
-            Rozdelenie výdavkov podľa kategórií
-          </h2>
+    <div className="max-w-6xl w-full mx-auto min-h-screen flex justify-center items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ position: "relative", height: "25vh", width: "65vw" }} >
+      {/* Left column: Doughnut chart */}
+      <div className="bg-white rounded-xl shadow p-4 flex flex-col justify-center">
+        <h2 className="text-lg font-semibold mb-4 text-gray-700">Spending by Category</h2>
+        
           <Doughnut data={categoryData} />
+        
+      </div>
+
+      {/* Right column: stacked layout */}
+      <div className="flex flex-col gap-6">
+        {/* Top: Stacked bar chart */}
+        <div className="bg-white rounded-xl shadow p-4 flex-1">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">Spending Breakdown by Month</h2>
+          <div className="h-56">
+            <Bar data={stackedData} options={stackedOptions} />
+          </div>
         </div>
 
-        {/* Trend over time */}
-        <div className="bg-white rounded-xl shadow p-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
-            Trend výdavkov v čase
-          </h2>
-          <Line data={trendData} />
-        </div>
-
-        {/* Top Vendors */}
-<div className="bg-white rounded-xl shadow p-4">
-  <h2 className="text-lg font-semibold mb-4 text-gray-700">Top Vendors</h2>
-  <Radar data={merchantData} options={radarOptions} />
-</div>
-
-        {/* Stacked category breakdown */}
-        <div className="bg-white rounded-xl shadow p-4">
-          <Bar data={stackedData} options={stackedOptions} />
+        {/* Bottom: Trend chart */}
+        <div className="bg-white rounded-xl shadow p-4 flex-1">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">Spending Over Time</h2>
+          <div className="h-56">
+            <Line data={trendData} />
+          </div>
         </div>
       </div>
     </div>
+</div>
   );
 }
 
