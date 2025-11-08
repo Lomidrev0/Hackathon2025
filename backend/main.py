@@ -239,7 +239,6 @@ async def root():
     return {"message": "Vector AI backend (LLaMA3 + SQL fallback + tréning) beží"}
 
 
-
 def get_db_connection():
     return psycopg2.connect(
         host=DB_SERVER,
@@ -249,6 +248,7 @@ def get_db_connection():
         port=PORT
     )
 
+
 def fetch_all_goals(conn):
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     cursor.execute("SELECT * FROM saving_goals ORDER BY end_date;")
@@ -256,26 +256,31 @@ def fetch_all_goals(conn):
     cursor.close()
     return records
 
+
 @app.post("/goals")
 async def add_goal(
-        name: str = Body(...),
-        category: str = Body(...),
-        description: str = Body(None),
-        target_amount: float = Body(...),
-        start_date: str = Body(...),
-        end_date: str = Body(...),
-        user_id: int = Body(1),
-        motivation: str = Body(None)
+    name: str = Body(...),
+    category: str = Body(...),
+    description: str = Body(None),
+    budget_ai: float = Body(...),
+    target_amount: float = Body(...),
+    start_date: str = Body(...),
+    end_date: str = Body(...),
+    user_id: int = Body(1),
+    penalty: str = Body(None),
 ):
+    """
+    Pridá nový cieľ sporenia do tabuľky saving_goals.
+    """
     conn = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO saving_goals
-            (user_id, name, category, description, target_amount, start_date, end_date, motivation)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-        """, (user_id, name, category, description, target_amount, start_date, end_date, motivation))
+            (user_id, name, category, description, budget_ai, target_amount, start_date, end_date, penalty)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """, (user_id, name, category, description, budget_ai, target_amount, start_date, end_date, penalty))
         conn.commit()
         cursor.close()
         records = fetch_all_goals(conn)
@@ -286,13 +291,17 @@ async def add_goal(
         if conn:
             conn.close()
 
+
 @app.get("/goals")
 async def get_all_goals():
+    """
+    Načíta všetky ciele sporenia z databázy.
+    """
     conn = None
     try:
         conn = get_db_connection()
         records = fetch_all_goals(conn)
-        return {"goals": records if records is not None else []}
+        return {"goals": records if records else []}
     except Exception as e:
         return {"error": str(e), "goals": []}
     finally:
