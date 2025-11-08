@@ -32,7 +32,11 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
           }`}
         >
         {/* Top Row — Title + Toggle */}
-        <div className="w-full flex items-center justify-between">
+        <div
+          className={`w-full flex items-center ${
+          isCollapsed ? 'justify-center' : 'justify-between'
+        }`}
+>
           {!isCollapsed && <h1 className="text-xl font-bold">Saivings</h1>}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -50,7 +54,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
               : "opacity-100 translate-y-0 h-auto"
           }`}
         >
-          Made by MLR x ERSTE
+          Made by MLR x ERSTE DIGITAL
         </div>
       </div>
 
