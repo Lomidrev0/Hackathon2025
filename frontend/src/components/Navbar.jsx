@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { FiHome, FiUser, FiSettings, FiMenu, FiMessageSquare, FiSun, FiMoon } from "react-icons/fi"
+import { FiHome, FiUser, FiSettings, FiMenu, FiMessageSquare, FiSun, FiMoon, FiUpload  } from "react-icons/fi"
 
 export default function Navbar({ isCollapsed, setIsCollapsed }) {
   const [darkMode, setDarkMode] = useState(() => {
@@ -48,7 +48,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
 
         {/* Subtitle (hidden when collapsed) */}
         <div
-          className={`text-[11px] tracking-wide text-gray-700 dark:text-gray-300 mt-0 transition-all duration-300 ${
+          className={`text-[11px] tracking-wide  text-gray-300 mt-0 transition-all duration-300 ${
             isCollapsed
               ? "opacity-0 translate-y-[-5px] h-0 overflow-hidden"
               : "opacity-100 translate-y-0 h-auto"
@@ -63,7 +63,8 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
             <NavItem icon={<FiHome />} label="Home" to="/dashboard" collapsed={isCollapsed} />
             <NavItem icon={<FiMessageSquare />} label="Chat bot" to="/chat" collapsed={isCollapsed} />
             <NavItem icon={<FiUser />} label="My Goals" to="/goals" collapsed={isCollapsed} />
-            <NavItem icon={<FiSettings />} label="Nastavenia" to="/settings" collapsed={isCollapsed} />
+            <NavItem icon={<FiSettings />} label="Settings" to="/settings" collapsed={isCollapsed} />
+            <NavItem icon={<FiUpload />} label="Upload" to="/upload" collapsed={isCollapsed} />
           </nav>
         </div>
       {/* Header / Toggle */}

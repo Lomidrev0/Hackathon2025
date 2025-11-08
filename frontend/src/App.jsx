@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard"
 import Chat from "./pages/Chat"
 import MainLayout from "./layouts/MainLayout"
 import Settings from "./pages/Settings"
+import Upload from "./pages/Upload"
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/upload" element={<Upload />} />
         </Route>
       </Routes>
     </BrowserRouter>
