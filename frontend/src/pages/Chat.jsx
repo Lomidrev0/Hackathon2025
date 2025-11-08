@@ -12,72 +12,80 @@ export default function Chat() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
+    // Show the user's message immediately
     const newMessage = { sender: "user", text: input };
     setMessages((prev) => [...prev, newMessage]);
 
-    // Simulate a bot reply
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Zatiaľ nekomunikujem so serverom, ale som tu! 🤖" },
-      ]);
-    }, 500);
+    // Send the message to your backend
+    try {
+  const response = await fetch(
+    `http://localhost:8000/ai/ask?prompt=${encodeURIComponent(input)}`
+  );
+
+  if (!response.ok) throw new Error("Network error");
+
+  const data = await response.json();
+
+  if (data.reply) {
+    setMessages((prev) => [...prev, { sender: "bot", text: data.reply }]);
+  }
+} catch (error) {
+  console.error("Error sending message:", error);
+  setMessages((prev) => [
+    ...prev,
+    { sender: "bot", text: "⚠️ Nepodarilo sa odoslať správu na server." },
+  ]);
+}
 
     setInput("");
   };
 
   return (
-    <div className="flex flex-col h-[90vh] bg-gradient-to-t from-slate-900 to-slate-950 shadow rounded-lg overflow-hidden">
-      {/* Chat area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {messages.map((msg, i) => (
-          <MessageBubble key={i} sender={msg.sender} text={msg.text} />
+    <div className="flex flex-col h-[80vh] bg-gray-100 rounded-lg shadow overflow-hidden">
+      <div className="bg-blue-600 text-white p-4 font-semibold">Četový poradca</div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {messages.map((msg, index) => (
+          <MessageBubble key={index} sender={msg.sender} text={msg.text} />
         ))}
         <div ref={chatEndRef} />
       </div>
 
-      {/* Input area */}
-      <div className="justify-center flex p-4 shadow-md">
-        <div className="flex items-center bg-white shadow-md rounded-full px-4 py-2 w-full max-w-2xl border border-gray-200">
-            <input
+      <div className="p-4 bg-white flex justify-center">
+        <div className="flex items-center bg-gray-100 shadow-inner rounded-full px-4 py-2 w-full max-w-2xl">
+          <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Napíš správu..."
-            className="flex-1 px-3 py-2 bg-transparent outline-none text-gray-800"
-            />
-        <button
+            className="flex-1 bg-transparent outline-none text-gray-800"
+          />
+          <button
             onClick={handleSend}
             className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
-            >
+          >
             Odoslať
-        </button>
-  </div>
-</div>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
 function MessageBubble({ sender, text }) {
   const isUser = sender === "user";
-
   return (
-    <div
-      className={`flex w-full ${
-        isUser ? "justify-end" : "justify-start"
-      }`}
-    >
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[75%] px-4 py-2 text-sm shadow 
-          ${
-            isUser
-              ? "bg-blue-500 text-white rounded-2xl rounded"
-              : "bg-gray-200 text-gray-800 rounded-2xl rounded"
-          }`}
+        className={`max-w-[75%] px-4 py-2 text-sm shadow ${
+          isUser
+            ? "bg-blue-500 text-white rounded-2xl rounded-br-none"
+            : "bg-gray-200 text-gray-800 rounded-2xl rounded-bl-none"
+        }`}
       >
         {text}
       </div>
