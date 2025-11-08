@@ -28,9 +28,10 @@ export default function Chat() {
   if (!response.ok) throw new Error("Network error");
 
   const data = await response.json();
+  console.log(data)
 
-  if (data.reply) {
-    setMessages((prev) => [...prev, { sender: "bot", text: data.reply }]);
+  if (data.answer) {
+    setMessages((prev) => [...prev, { sender: "bot", text: data.answer }]);
   }
 } catch (error) {
   console.error("Error sending message:", error);
