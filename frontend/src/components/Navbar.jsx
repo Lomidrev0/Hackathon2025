@@ -50,7 +50,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
               : "opacity-100 translate-y-0 h-auto"
           }`}
         >
-          Made by MLR x ERSTE
+          Made by MLR x ERSTE DIGITAL
         </div>
       </div>
 
