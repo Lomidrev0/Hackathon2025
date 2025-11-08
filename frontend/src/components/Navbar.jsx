@@ -37,7 +37,11 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
           isCollapsed ? 'justify-center' : 'justify-between'
         }`}
 >
-          {!isCollapsed && <h1 className="text-xl font-bold">Saivings</h1>}
+          {!isCollapsed && (
+            <h1 className="text-xl font-bold">
+                s<span className="text-blue-85"><strong>AI</strong></span>vings
+                </h1>
+)}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="p-2 rounded"
