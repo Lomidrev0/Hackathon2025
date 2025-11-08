@@ -1,16 +1,23 @@
-import Navbar from "../components/Navbar";
-import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar"
+import { Outlet } from "react-router-dom"
+import { useState } from "react"
 
 export default function MainLayout() {
-  return (
-    <div className="flex">
-      {/* Sidebar / Navbar */}
-      <Navbar />
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-6 min-h-screen bg-slate-950">
-        <Outlet /> {/* 👈 This is the key line */}
+  return (
+    <div className="flex bg-white dark:bg-dark-primary">
+      {/* Sidebar */}
+      <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+
+      {/* Main content */}
+      <main
+        className={`transition-all duration-300 flex-1 min-h-screen p-6 bg-white dark:bg-dark-primary text-gray-900 dark:text-gray-100 ${
+          isCollapsed ? "ml-20" : "ml-64"
+        }`}
+      >
+        <Outlet />
       </main>
     </div>
-  );
+  )
 }
