@@ -42,9 +42,9 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
 
           {/* Navigation */}
           <nav className="flex flex-col mt-4 space-y-1 mx-1">
-            <NavItem icon={<FiHome />} label="Dashboard" to="/dashboard" collapsed={isCollapsed} />
-            <NavItem icon={<FiMessageSquare />} label="Četový poradca" to="/chat" collapsed={isCollapsed} />
-            <NavItem icon={<FiUser />} label="Moje informácie" to="/myinfo" collapsed={isCollapsed} />
+            <NavItem icon={<FiHome />} label="Home" to="/dashboard" collapsed={isCollapsed} />
+            <NavItem icon={<FiMessageSquare />} label="Chat bot" to="/chat" collapsed={isCollapsed} />
+            <NavItem icon={<FiUser />} label="My Goals" to="/goals" collapsed={isCollapsed} />
             <NavItem icon={<FiSettings />} label="Nastavenia" to="/settings" collapsed={isCollapsed} />
           </nav>
         </div>
@@ -55,17 +55,14 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
           onClick={() => setDarkMode(!darkMode)}
           className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-50 dark:bg-blue-60 text-white font-semibold hover:bg-blue-60 dark:hover:bg-blue-40"
         >
+          <>
           {darkMode ? (
-            <>
               <FiSun />
-              {!isCollapsed && <span>Svetlý režim</span>}
-            </>
           ) : (
-            <>
               <FiMoon />
-              {!isCollapsed && <span>Tmavý režim</span>}
-            </>
           )}
+             {!isCollapsed && <span>Change theme</span>}
+          </>
         </button>
       </div>
     </div>

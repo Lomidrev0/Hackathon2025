@@ -9,6 +9,7 @@ import re
 import os
 import pickle
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Body
 
 
 # -------------------------------
@@ -340,3 +341,98 @@ async def ask_ai(prompt: str = Query(..., description="Otázka pre AI")):
 @app.get("/")
 async def root():
     return {"message": "Vector AI backend (LLaMA3 + SQL fallback + tréning) beží 🚀"}
+
+@app.get("/")
+async def root():
+    return {"message": "Vector AI backend (LLaMA3 + SQL fallback + tréning) beží 🚀"}
+
+#11
+def get_db_connection():
+    """Funkcia na získanie pripojenia do DB."""
+    return psycopg2.connect(
+        host=DB_SERVER,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        port=PORT
+    )
+
+
+def fetch_all_goals(conn):
+    """Funkcia na získanie všetkých cieľov z databázy."""
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    # PREDPOKLAD: 'saving_goals' tabuľka existuje a obsahuje stĺpce
+    cursor.execute("SELECT * FROM saving_goals ORDER BY end_date;")
+    records = cursor.fetchall()
+    cursor.close()
+    return records
+
+
+# --- KONIEC PREDPOKLADANÝCH NASTAVENÍ ---
+
+
+@app.post("/goals")
+async def add_goal(
+        name: str = Body(...),
+        category: str = Body(...),
+        description: str = Body(None),
+        target_amount: float = Body(...),
+        start_date: str = Body(...),
+        end_date: str = Body(...),
+        user_id: int = Body(1),
+        motivation: str = Body(None)
+):
+    """
+    Vloží nový goal do databázy a vráti aktualizovaný zoznam goalov.
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # 1. Vloženie nového cieľa
+        cursor.execute("""
+            INSERT INTO saving_goals
+            (user_id, name, category, description, target_amount, start_date, end_date, motivation)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+        """, (user_id, name, category, description, target_amount, start_date, end_date, motivation))
+        conn.commit()
+        cursor.close()
+
+        # 2. Získanie aktualizovaného zoznamu cieľov
+        records = fetch_all_goals(conn)
+
+        # Vraciame pole 'goals' aj v prípade úspechu
+        return {"message": f"Goal '{name}' bol úspešne pridaný.", "goals": records}
+
+    except Exception as e:
+        # V prípade chyby vraciame chybu A prázdne pole goals, aby sa nebugol frontend
+        return {"error": str(e), "goals": []}
+
+    finally:
+        # Uzatvorenie pripojenia, ak bolo otvorené
+        if conn:
+            conn.close()
+
+
+@app.get("/goals")
+async def get_all_goals():
+    """
+    Vráti všetky saving goals z databázy.
+    Vždy vracia kľúč 'goals', aby bol frontend stabilný.
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        records = fetch_all_goals(conn)
+
+        # ⭐ OPRAVA: Vrátime vždy kľúč 'goals', aj keď je prázdny.
+        return {"goals": records if records is not None else []}
+
+    except Exception as e:
+        # V prípade chyby vrátime chybu a prázdne goals
+        return {"error": str(e), "goals": []}
+
+    finally:
+        if conn:
+            conn.close()

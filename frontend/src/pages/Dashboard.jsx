@@ -98,7 +98,7 @@ export default function Dashboard() {
     },
     plugins: {
       legend: { display: false },
-      title: { display: true, text: "Top Vendors Spending Profile", color: textColor },
+      title: { display: true, text: "Top Vendors Spending Goals", color: textColor },
     },
   }
 
