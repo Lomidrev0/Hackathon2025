@@ -6,7 +6,7 @@ export default function MainLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
-    <div className="flex">
+    <div className="flex bg-white dark:bg-dark-primary">
       {/* Sidebar */}
       <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 

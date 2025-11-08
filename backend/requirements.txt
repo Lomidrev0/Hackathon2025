@@ -1,11 +1,5 @@
 fastapi
 uvicorn
+pydantic
 psycopg2-binary
-transformers
-peft
-datasets
-bitsandbytes
-accelerate
-torch
-langchain
 langchain-ollama
