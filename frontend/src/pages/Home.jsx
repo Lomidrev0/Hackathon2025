@@ -9,26 +9,9 @@ export default function Home() {
     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
   }
 
-  const [darkMode, setDarkMode] = useState(getInitialMode)
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark")
-      localStorage.setItem("theme", "dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-      localStorage.setItem("theme", "light")
-    }
-  }, [darkMode])
-
   return (
     <div className="flex flex-col md:flex-row h-screen transition-colors duration-500 bg-gradient-to-br from-blue-10 to-white dark:from-blue-85 dark:to-dark-secondary">
-      <button
-        onClick={() => setDarkMode(!darkMode)}
-        className="absolute top-4 right-4 px-3 py-2 text-sm bg-blue-50 dark:bg-blue-60 text-white rounded-lg shadow hover:opacity-90 transition"
-      >
-        {darkMode ? "Light" : "Dark"}
-      </button>
+
 
       <div className="flex flex-col justify-center items-center md:items-start text-center md:text-left p-10 md:w-1/2">
         <h1 className="text-5xl font-bold mb-4 text-blue-60 dark:text-light-primary">
