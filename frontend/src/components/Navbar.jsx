@@ -31,7 +31,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
               isCollapsed ? "justify-center" : "justify-between"
             } p-4 border-b border-gray-200 dark:border-neutral-700 bg-blue-50 dark:bg-blue-60 text-white`}
           >
-            {!isCollapsed && <h1 className="text-xl font-bold">Aplikácia</h1>}
+            {!isCollapsed && <h1 className="text-xl font-bold">Saivings</h1>}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="p-2 rounded "
@@ -49,6 +49,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
           </nav>
         </div>
       {/* Header / Toggle */}
+
       {/* Dark mode toggle */}
       <div className="p-4 border-t border-gray-200 dark:border-neutral-700">
         <button
